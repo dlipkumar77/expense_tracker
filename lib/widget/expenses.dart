@@ -45,6 +45,14 @@ class _ExpensesState extends State<Expenses> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color.fromARGB(255, 22, 2, 60),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, color: Colors.white),
+            onPressed: () {
+              print('Add new expense');
+            },
+          )
+        ],
       ),
       body: Column(
         children: [
