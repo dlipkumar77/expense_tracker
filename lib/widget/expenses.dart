@@ -40,8 +40,16 @@ class _ExpensesState extends State<Expenses> {
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => NewExpenses(),
+      builder: (ctx) => NewExpenses(
+        onAddExpense: _addExpeses,
+      ),
     );
+  }
+
+  void _addExpeses(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
   }
 
   @override
