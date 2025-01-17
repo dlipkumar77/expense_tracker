@@ -54,23 +54,51 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(expense);
     setState(() {
       _registeredExpenses.remove(expense);
     });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Expense removed'),
+        duration: Duration(seconds: 2),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _registeredExpenses.insert(expenseIndex, expense);
+            });
+          },
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = Center(
+      child: Text('No expenses added yet'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+          expenses: _registeredExpenses, onRemoveExpense: _removeExpense);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Expenses Tracker',
-          style: TextStyle(color: Colors.white),
+          //style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color.fromARGB(255, 22, 2, 60),
+        //backgroundColor: const Color.fromARGB(255, 22, 2, 60),
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: Colors.white),
+            icon: Icon(
+              Icons.add,
+            ),
+            //icon: Icon(Icons.add, color: Colors.white),
             onPressed: _openAddExpenseOverlay,
           )
         ],
@@ -78,10 +106,7 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           Text('Expenses chart'),
-          Expanded(
-              child: ExpensesList(
-                  expenses: _registeredExpenses,
-                  onRemoveExpense: _removeExpense)),
+          Expanded(child: mainContent),
         ],
       ),
     );
