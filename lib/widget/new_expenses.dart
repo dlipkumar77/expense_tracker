@@ -22,6 +22,16 @@ class _NewExpensesState extends State<NewExpenses> {
   //   _enteredTitle = value;
   // }
 
+  void _presentDatePicker() {
+    var now = DateTime.now();
+    var firstDate = DateTime(now.year - 1, now.month, now.day);
+    showDatePicker(
+        context: context,
+        initialDate: now,
+        firstDate: firstDate,
+        lastDate: now);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,10 +44,31 @@ class _NewExpensesState extends State<NewExpenses> {
             maxLength: 50,
             decoration: InputDecoration(labelText: 'Title'),
           ),
-          TextField(
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(prefixText: '\$ ', labelText: 'Amount'),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  keyboardType: TextInputType.number,
+                  decoration:
+                      InputDecoration(prefixText: '\$ ', labelText: 'Amount'),
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Selected Date'),
+                    IconButton(
+                      onPressed: _presentDatePicker,
+                      icon: Icon(Icons.calendar_month),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
           Row(
             children: [
